@@ -1,0 +1,10 @@
+# ninja log v5
+1	1258	1782318607772343017	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	78e15110caa740b7
+1	1269	1782318607782840788	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	2bed52f1f6556634
+0	1281	1782318607796234814	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	72a6fe4c939f0d25
+2	1293	1782318607809293756	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	b3ac1a40f1a80914
+1	1362	1782318607878458224	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	c812cbe6e8d0c60d
+2	1416	1782318607932431371	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	6f53ffaf9996340a
+1	1637	1782318608156200139	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	d719ec48cc42003a
+0	1733	1782318608251355157	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	d0d6a53474a03773
+1733	1890	1782318608409968215	/Users/carlota.fernandez/Unity Projects/TFG mastectomia final/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2u445y6h/obj/arm64-v8a/libgame.so	d2846161eb568f51
