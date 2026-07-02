@@ -89,7 +89,7 @@ The repository contains the complete Unity project required to reproduce the vir
 
 A complete demonstration of the developed virtual reality prototype is available at:
 
-▶ **YouTube**
+**YouTube**
 
 https://youtube.com/shorts/r-G8az3rG4o?feature=share
 
@@ -115,10 +115,6 @@ The complete Bachelor's Thesis describes:
 - Results
 - Discussion
 - Future work
-
-PDF:
-
-https://YOUR_PDF_LINK
 
 ---
 
