@@ -91,7 +91,7 @@ A complete demonstration of the developed virtual reality prototype is available
 
 ▶ **YouTube**
 
-https://YOUR_VIDEO_LINK
+https://youtube.com/shorts/r-G8az3rG4o?feature=share
 
 ---
 
