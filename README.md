@@ -1,11 +1,5 @@
 # Virtual Reality Prototype for Preoperative Body Familiarization Before Mastectomy
 
-<p align="center">
-<img src="Images/Prototype.png" width="900">
-</p>
-
-<p align="center">
-
 **Bachelor's Thesis – Biomedical Engineering**  
 Universidad CEU San Pablo  
 2025–2026
