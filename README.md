@@ -101,6 +101,12 @@ https://YOUR_VIDEO_LINK
 
 ---
 
+## Download
+
+The latest standalone Android build (.apk) can be downloaded from the **Releases** section of this repository:
+
+https://github.com/carlotafernandezfernandez/Mastectomy_TFG_Carlota/releases
+
 # Bachelor's Thesis
 
 The complete Bachelor's Thesis describes:
