@@ -1,2 +1,0 @@
-/Users/carlota.fernandez/Unity Projects/TFG mastectomia final/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/CMakeLists.txt
-/Users/carlota.fernandez/Unity Projects/TFG mastectomia final/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/CMakeLists.txt
