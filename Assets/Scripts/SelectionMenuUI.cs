@@ -1,70 +1,52 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SelectionMenuUI : MonoBehaviour
 {
     public GameObject[] panels;
 
-    [Header("Experience Objects")]
-    public GameObject selectionMenu;
-    public GameObject bathroomScene;
-    public GameObject xrOrigin;
-
-    [Header("Avatar Selection")]
+    [Header("Preview")]
     public AvatarSelectionManager avatarSelectionManager;
 
-    [Header("Instructions")]
-    public InstructionManager instructionManager;
+    [Header("Scene")]
+    public string experienceSceneName = "MyProject";
+
+    int currentPanelIndex = 0;
+
+    void Start()
+    {
+        ShowPanel(0);
+    }
 
     public void ShowPanel(int index)
     {
+        if (panels == null || panels.Length == 0)
+            return;
+
+        currentPanelIndex = Mathf.Clamp(index, 0, panels.Length - 1);
+
         for (int i = 0; i < panels.Length; i++)
         {
-            panels[i].SetActive(i == index);
+            if (panels[i] != null)
+                panels[i].SetActive(i == currentPanelIndex);
         }
+
+        if (avatarSelectionManager != null)
+            avatarSelectionManager.SetPreviewStage(currentPanelIndex);
     }
 
-     public void StartExperience()
+    public void NextPanel()
     {
-      selectionMenu.SetActive(false);
-
-      if (bathroomScene != null)
-          bathroomScene.SetActive(true);
-
-      if (xrOrigin != null)
-      {
-          xrOrigin.SetActive(true);
-
-          Transform centerEye = xrOrigin.transform.Find("TrackingSpace/CenterEyeAnchor");
-          Vector3 spawnPoint = new Vector3(0f, 0.3f, 0f);
-
-          if (centerEye != null)
-          {
-              Vector3 eyeOffset = centerEye.position - xrOrigin.transform.position;
-              eyeOffset.y = 0f;
-              xrOrigin.transform.position = spawnPoint - eyeOffset;
-          }
-      }
-
-      GameObject selectedAvatar = avatarSelectionManager.GetActiveAvatar();
-
-      if (selectedAvatar == null)
-      {
-          Debug.LogWarning("No active avatar selected.");
-          return;
-      }
-
-      Transform headAnchor = selectedAvatar.transform.Find("VR_HeadAnchor");
-
-      if (headAnchor == null)
-      {
-          Debug.LogWarning("No VR_HeadAnchor found in selected avatar.");
-          return;
-      }
-
-      if (instructionManager != null)
-      {
-          instructionManager.StartInstructions();
-      }
+        ShowPanel(currentPanelIndex + 1);
     }
 
+    public void PreviousPanel()
+    {
+        ShowPanel(currentPanelIndex - 1);
+    }
+
+    public void StartExperience()
+    {
+        SceneManager.LoadScene(experienceSceneName);
+    }
 }

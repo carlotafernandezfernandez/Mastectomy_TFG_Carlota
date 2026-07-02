@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MY_PROJECT/MyProject.unity
+    path: Assets/Scenes/SelectionAvatar.unity
+    guid: d76aec0e500a8419e8e93a6771bd531a
+  - enabled: 1
+    path: Assets/Scenes/MyProject.unity
     guid: 48431fc3c0d8e48a3811f72b5aefd22a
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 22c36995664fe409a80c918e1a4c8c42, type: 2}

@@ -1,0 +1,287 @@
+@startuml
+title TFG Mastectomia VR - UML Overview
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+package "SelectionAvatar Scene" {
+  class SelectionMenuUI {
+    +GameObject[] panels
+    +AvatarSelectionManager avatarSelectionManager
+    +string experienceSceneName
+    -int currentPanelIndex
+    +ShowPanel(index)
+    +NextPanel()
+    +PreviousPanel()
+    +StartExperience()
+  }
+
+  class AvatarSelectionManager {
+    +GameObject avatarSlim
+    +GameObject avatarMedium
+    +GameObject avatarWide
+    -GameObject activeAvatar
+    -int previewStage
+    +GetActiveAvatar()
+    +SetPreviewStage(stage)
+    +SelectBodySlim()
+    +SelectBodyMedium()
+    +SelectBodyWide()
+    +SelectMastectomyNormal()
+    +SelectMastectomyLeft()
+    +SelectMastectomyRight()
+    +SelectMastectomyBilateral()
+    +SelectHairLongCurly()
+    +SelectHairLongStraight()
+    +SelectHairMediumCurly()
+    +SelectHairShortCurly()
+    +SelectHairShortStraight()
+    +SetSkinLight()
+    +SetSkinMedium()
+    +SetSkinDark()
+    +SetEyesBrown()
+    +SetEyesBlue()
+    +SetEyesGreen()
+    +SetHairBlack()
+    +SetHairLightBrown()
+    +SetHairDarkBrown()
+    +SetHairBlonde()
+    +SetHairGray()
+  }
+
+  class AvatarSelectionDesktopTester {
+    +AvatarSelectionManager avatarSelectionManager
+    +SelectionMenuUI selectionMenuUI
+    -Update()
+  }
+}
+
+package "MyProject Scene - Initialization" {
+  class ExperienceSceneStarter {
+    +GameObject avatarSlim
+    +GameObject avatarMedium
+    +GameObject avatarWide
+    +GameObject xrOrigin
+    +Vector3 spawnPoint
+    +InstructionManager instructionManager
+    -Start()
+    -ActivateSelectedAvatar()
+    -ApplySelectedOptions()
+    -PlaceXROriginAtSpawn()
+  }
+
+  class AvatarBodyFollower {
+    +Transform centerEyeAnchor
+    +Transform avatarRoot
+    +Transform avatarHeadAnchor
+    +bool autoUseActiveAvatar
+    +string headAnchorName
+    +bool followYaw
+    +float avatarYawOffsetDegrees
+    +Vector3 headWorldOffset
+    -LateUpdate()
+    -RefreshActiveAvatarReferences()
+    -FollowHeadAndBody()
+  }
+}
+
+package "MyProject Scene - Instruction Flow" {
+  class InstructionManager {
+    +ParticleSystem successParticles
+    +AudioSource successAudio
+    +float successFeedbackDelay
+    +float nextStepDelay
+    +float shirtRemovalDelay
+    +GameObject bathroomCanvas
+    +TMP_Text bathroomText
+    +GameObject bathroomCheck
+    +GameObject understoodButton
+    -int currentStep
+    -bool instructionsStarted
+    +IsCurrentStep(step)
+    +StartInstructions()
+    +CompleteMirrorStep()
+    +RemoveShirt(shirtToRemove)
+    +CompleteSoapStep()
+    +CompleteWaterStep()
+    +CompleteTowelStep()
+    +CompleteExperience()
+  }
+
+  class MirrorStepTrigger {
+    +InstructionManager instructionManager
+    -bool completed
+    -bool playerWasInside
+    -OnTriggerEnter(other)
+    -OnTriggerStay(other)
+    -OnTriggerExit(other)
+  }
+
+  class ShirtHandTrigger {
+    +InstructionManager instructionManager
+    +bool allowNameFallback
+    -bool removed
+    -OnTriggerEnter(other)
+  }
+
+  class SoapTrigger {
+    +InstructionManager instructionManager
+    +GameObject soapObject
+    +bool requireSoapWasGrabbed
+    +float grabbedMovementThreshold
+    -bool soapWasGrabbed
+    -bool completed
+    -Update()
+    -OnTriggerEnter(other)
+    -OnTriggerStay(other)
+    +MarkSoapGrabbed()
+  }
+
+  class WaterTrigger {
+    +InstructionManager instructionManager
+    +bool allowNameFallback
+    -bool completed
+    -OnTriggerEnter(other)
+    -OnTriggerStay(other)
+  }
+
+  class TowelTrigger {
+    +InstructionManager instructionManager
+    +GameObject towelObject
+    +bool requireTowelWasGrabbed
+    +float grabbedMovementThreshold
+    -bool towelWasGrabbed
+    -bool completed
+    -Update()
+    -OnTriggerEnter(other)
+    -OnTriggerStay(other)
+    +MarkTowelGrabbed()
+  }
+}
+
+package "MyProject Scene - Interaction Helpers" {
+  class HandInteractionDetector <<static>> {
+    +IsHand(other, allowNameFallback)
+  }
+
+  class HandCollisionTarget {
+  }
+
+  class FaucetWaterController {
+    +Transform faucetHandle
+    +ParticleSystem waterParticles
+    +Vector3 closedRotation
+    +Vector3 openRotation
+    +bool allowNameFallback
+    -bool isOpen
+    -OnTriggerEnter(other)
+    -OnTriggerStay(other)
+    +OpenFaucet()
+    +IsOpen()
+  }
+
+  class WaterContactTrigger {
+    +FaucetWaterController faucet
+    +bool allowNameFallback
+    -OnTriggerEnter(other)
+    -OnTriggerStay(other)
+  }
+
+  class WaterHandState <<static>> {
+    +bool HasWetHand
+    +MarkHandWet()
+    +Clear()
+  }
+
+  class OpenCloseDoor {
+    +float closedAngle
+    +float openAngle
+    +float speed
+    +Vector3 rotationAxis
+    +bool allowNameFallback
+    +float toggleCooldown
+    -bool isOpen
+    -Update()
+    -OnTriggerEnter(other)
+  }
+
+  class VRCanvasButtonPoke {
+    +Canvas canvas
+    +Camera eventCamera
+    +OVRSkeleton leftSkeleton
+    +OVRSkeleton rightSkeleton
+    +float activationDistance
+    +float requiredHoldTime
+    +float cooldown
+    -Update()
+    -RefreshButtons()
+    -PressButton(button)
+  }
+}
+
+package "MyProject Scene - Avatar IK" {
+  class IKTargetFollower {
+    +Transform targetToFollow
+    +Vector3 positionOffset
+    +Vector3 rotationOffset
+    -LateUpdate()
+  }
+
+  class "Unity RigBuilder" as RigBuilder <<Unity>>
+  class "TwoBoneIKConstraint" as TwoBoneIKConstraint <<Unity Animation Rigging>>
+  class "LeftHandAnchor / RightHandAnchor" as HandAnchors <<Meta XR>>
+  class "LeftHandIK_Target / RightHandIK_Target" as IKTargets
+  class "LeftElbowIK_Hint / RightElbowIK_Hint" as IKHints
+}
+
+package "Unity / Meta XR Systems" {
+  class PlayerPrefs <<Unity>>
+  class SceneManager <<Unity>>
+  class EventSystem <<Unity>>
+  class GraphicRaycaster <<Unity UI>>
+  class PointableCanvasModule <<Oculus Interaction>>
+  class InputSystemUIInputModule <<Unity Input System>>
+  class OVRSkeleton <<Meta XR>>
+}
+
+SelectionMenuUI --> AvatarSelectionManager : updates preview
+SelectionMenuUI --> SceneManager : loads MyProject
+AvatarSelectionManager --> PlayerPrefs : saves selection
+ExperienceSceneStarter --> PlayerPrefs : reads selection
+ExperienceSceneStarter --> InstructionManager : starts sequence
+ExperienceSceneStarter --> AvatarBodyFollower : scene avatar is followed
+
+AvatarBodyFollower --> HandAnchors : shares XR rig space
+IKTargetFollower --> HandAnchors : follows
+IKTargets --> TwoBoneIKConstraint : target
+IKHints --> TwoBoneIKConstraint : hint
+RigBuilder --> TwoBoneIKConstraint : evaluates constraints
+
+MirrorStepTrigger --> InstructionManager : complete step 1
+ShirtHandTrigger --> InstructionManager : remove shirt / complete step 2
+SoapTrigger --> InstructionManager : complete step 3
+WaterTrigger --> InstructionManager : complete step 4
+TowelTrigger --> InstructionManager : complete step 5
+
+ShirtHandTrigger --> HandInteractionDetector : detects hand
+WaterTrigger --> HandInteractionDetector : detects hand
+OpenCloseDoor --> HandInteractionDetector : detects hand
+FaucetWaterController --> HandInteractionDetector : detects hand
+WaterContactTrigger --> HandInteractionDetector : detects hand
+HandInteractionDetector --> HandCollisionTarget : marker component
+
+FaucetWaterController --> WaterContactTrigger : water must be open
+WaterContactTrigger --> WaterHandState : mark wet hand
+WaterTrigger --> WaterHandState : requires wet hand
+
+VRCanvasButtonPoke --> OVRSkeleton : index fingertip
+VRCanvasButtonPoke --> InstructionManager : indirectly through Button OnClick
+EventSystem --> PointableCanvasModule
+EventSystem --> InputSystemUIInputModule
+GraphicRaycaster --> EventSystem
+
+AvatarSelectionDesktopTester ..> AvatarSelectionManager : testing only
+AvatarSelectionDesktopTester ..> SelectionMenuUI : testing only
+
+@enduml

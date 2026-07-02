@@ -9,17 +9,23 @@ public class MirrorStepTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        TryCompleteWithPlayer(other);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        TryCompleteWithPlayer(other);
+    }
+
+    private void TryCompleteWithPlayer(Collider other)
+    {
         if (!IsPlayer(other)) return;
 
-        // Si todavía no está activo el Step 1, solo registramos que está dentro
         if (instructionManager == null || !instructionManager.IsCurrentStep(0))
         {
             playerWasInside = true;
             return;
         }
-
-        // Si ya estaba dentro antes de empezar, no completar hasta que salga y vuelva a entrar
-        if (playerWasInside) return;
 
         CompleteStep();
     }
@@ -33,7 +39,22 @@ public class MirrorStepTrigger : MonoBehaviour
 
     private bool IsPlayer(Collider other)
     {
-        return other.CompareTag("MainCamera") || other.name.Contains("CenterEyeAnchor");
+        if (other.CompareTag("MainCamera"))
+            return true;
+
+        Transform current = other.transform;
+
+        while (current != null)
+        {
+            if (current.name.Contains("CenterEyeAnchor") ||
+                current.name.Contains("TrackingSpace") ||
+                current.name.Contains("Camera Rig"))
+                return true;
+
+            current = current.parent;
+        }
+
+        return false;
     }
 
     private void CompleteStep()

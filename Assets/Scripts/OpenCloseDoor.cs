@@ -9,7 +9,7 @@ public class OpenCloseDoor : MonoBehaviour
     public Vector3 rotationAxis = Vector3.up;
 
     [Header("Hand Interaction")]
-    public string handNameFilter = "Hand";
+    public bool allowNameFallback = true;
     public float toggleCooldown = 1f;
 
     private bool isOpen = false;
@@ -29,7 +29,7 @@ public class OpenCloseDoor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsHand(other))
+        if (!HandInteractionDetector.IsHand(other, allowNameFallback))
             return;
 
         if (Time.time - lastToggleTime < toggleCooldown)
@@ -37,20 +37,5 @@ public class OpenCloseDoor : MonoBehaviour
 
         isOpen = !isOpen;
         lastToggleTime = Time.time;
-    }
-
-    private bool IsHand(Collider other)
-    {
-        Transform current = other.transform;
-
-        while (current != null)
-        {
-            if (current.name.Contains(handNameFilter))
-                return true;
-
-            current = current.parent;
-        }
-
-        return false;
     }
 }

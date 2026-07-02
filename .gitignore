@@ -1,4 +1,3 @@
-# Unity generated folders
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -7,17 +6,13 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 
-# Memory captures
-[Mm]emoryCaptures/
+.vs/
+.vscode/
+.idea/
 
-# Asset meta data should be included, but these are generated
-*.tmp
-
-# Visual Studio / Rider / IDE files
 *.csproj
 *.sln
 *.user
-*.userprefs
 *.pidb
 *.booproj
 *.svd
@@ -26,17 +21,4 @@
 *.opendb
 *.VC.db
 
-.vscode/
-.idea/
-
-# OS files
 .DS_Store
-Thumbs.db
-
-# Unity crash reports
-sysinfo.txt
-
-# Builds
-*.apk
-*.aab
-*.unitypackage

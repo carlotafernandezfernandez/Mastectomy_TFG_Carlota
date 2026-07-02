@@ -7,13 +7,11 @@ public class InstructionManager : MonoBehaviour
     [Header("Feedback")]
     public ParticleSystem successParticles;
     public AudioSource successAudio;
+    public float successFeedbackDelay = 4f;
+    public float nextStepDelay = 5f;
+    public float shirtRemovalDelay = 1f;
 
-    [Header("Intro UI")]
-    public GameObject introCanvas;
-    public TMP_Text introText;
-    public GameObject introCheck;
-
-    [Header("Bathroom UI")]
+    [Header("Instruction UI")]
     public GameObject bathroomCanvas;
     public TMP_Text bathroomText;
     public GameObject bathroomCheck;
@@ -24,11 +22,9 @@ public class InstructionManager : MonoBehaviour
     private int currentStep = -1;
     private bool instructionsStarted = false;
 
-    void Start()
+    void Awake()
     {
-        if (introCanvas != null) introCanvas.SetActive(false);
         if (bathroomCanvas != null) bathroomCanvas.SetActive(false);
-        if (introCheck != null) introCheck.SetActive(false);
         if (bathroomCheck != null) bathroomCheck.SetActive(false);
         if (understoodButton != null) understoodButton.SetActive(false);
     }
@@ -43,14 +39,12 @@ public class InstructionManager : MonoBehaviour
         instructionsStarted = true;
         currentStep = 0;
 
-        if (introCanvas != null) introCanvas.SetActive(true);
-        if (bathroomCanvas != null) bathroomCanvas.SetActive(false);
-        if (introCheck != null) introCheck.SetActive(false);
+        if (bathroomCanvas != null) bathroomCanvas.SetActive(true);
         if (bathroomCheck != null) bathroomCheck.SetActive(false);
         if (understoodButton != null) understoodButton.SetActive(false);
 
-        if (introText != null)
-            introText.text = "Step 1: Look for the mirror and look at yourself.";
+        if (bathroomText != null)
+            bathroomText.text = "Step 1: Look for the mirror and look at yourself.";
     }
 
     public void CompleteMirrorStep()
@@ -63,15 +57,7 @@ public class InstructionManager : MonoBehaviour
     {
         currentStep = 99;
 
-        if (introCheck != null)
-            introCheck.SetActive(true);
-
-        PlaySuccessFeedback();
-
-        yield return new WaitForSeconds(1.2f);
-
-        if (introCanvas != null)
-            introCanvas.SetActive(false);
+        yield return WaitForSuccessFeedbackAndNextStep();
 
         if (bathroomCanvas != null)
             bathroomCanvas.SetActive(true);
@@ -89,6 +75,15 @@ public class InstructionManager : MonoBehaviour
     {
         if (!IsCurrentStep(1)) return;
 
+        StartCoroutine(RemoveShirtRoutine(shirtToRemove));
+    }
+
+    private IEnumerator RemoveShirtRoutine(GameObject shirtToRemove)
+    {
+        currentStep = 99;
+
+        yield return new WaitForSeconds(shirtRemovalDelay);
+
         if (shirtToRemove != null)
             shirtToRemove.SetActive(false);
 
@@ -97,14 +92,7 @@ public class InstructionManager : MonoBehaviour
 
     private IEnumerator ShirtStepRoutine()
     {
-        currentStep = 99;
-
-        if (bathroomCheck != null)
-            bathroomCheck.SetActive(true);
-
-        PlaySuccessFeedback();
-
-        yield return new WaitForSeconds(1.2f);
+        yield return WaitForSuccessFeedbackAndNextStep();
 
         if (bathroomCheck != null)
             bathroomCheck.SetActive(false);
@@ -125,12 +113,7 @@ public class InstructionManager : MonoBehaviour
     {
         currentStep = 99;
 
-        if (bathroomCheck != null)
-            bathroomCheck.SetActive(true);
-
-        PlaySuccessFeedback();
-
-        yield return new WaitForSeconds(1.2f);
+        yield return WaitForSuccessFeedbackAndNextStep();
 
         if (bathroomCheck != null)
             bathroomCheck.SetActive(false);
@@ -151,12 +134,7 @@ public class InstructionManager : MonoBehaviour
     {
         currentStep = 99;
 
-        if (bathroomCheck != null)
-            bathroomCheck.SetActive(true);
-
-        PlaySuccessFeedback();
-
-        yield return new WaitForSeconds(1.2f);
+        yield return WaitForSuccessFeedbackAndNextStep();
 
         if (bathroomCheck != null)
             bathroomCheck.SetActive(false);
@@ -177,12 +155,7 @@ public class InstructionManager : MonoBehaviour
     {
         currentStep = 99;
 
-        if (bathroomCheck != null)
-            bathroomCheck.SetActive(true);
-
-        PlaySuccessFeedback();
-
-        yield return new WaitForSeconds(1.2f);
+        yield return WaitForSuccessFeedbackAndNextStep();
 
         if (bathroomCheck != null)
             bathroomCheck.SetActive(false);
@@ -226,6 +199,19 @@ public class InstructionManager : MonoBehaviour
 
         if (bathroomText != null)
             bathroomText.text = "You may now remove the headset.";
+    }
+
+    private IEnumerator WaitForSuccessFeedbackAndNextStep()
+    {
+        float feedbackDelay = Mathf.Clamp(successFeedbackDelay, 0f, nextStepDelay);
+        yield return new WaitForSeconds(feedbackDelay);
+
+        if (bathroomCheck != null)
+            bathroomCheck.SetActive(true);
+
+        PlaySuccessFeedback();
+
+        yield return new WaitForSeconds(nextStepDelay - feedbackDelay);
     }
 
     private void PlaySuccessFeedback()
